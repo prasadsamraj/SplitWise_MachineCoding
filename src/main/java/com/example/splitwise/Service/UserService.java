@@ -2,6 +2,7 @@ package com.example.splitwise.Service;
 
 import com.example.splitwise.exceptions.UserAlreadyExistsException;
 import com.example.splitwise.Repository.UserRepository;
+import com.example.splitwise.exceptions.UserIdInvalidException;
 import com.example.splitwise.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,5 +25,13 @@ public class UserService {
         user.setPassword(password);
         user.setEmail(email);
         return userRepository.save(user);
+    }
+
+    public void updateProfile(Long userId, String password) throws UserIdInvalidException {
+        Optional<User> optionalUser = userRepository.findById(userId);
+        if(optionalUser.isEmpty()) throw new UserIdInvalidException();
+        User user = optionalUser.get();
+        user.setPassword(password);
+        userRepository.save(user);
     }
 }
