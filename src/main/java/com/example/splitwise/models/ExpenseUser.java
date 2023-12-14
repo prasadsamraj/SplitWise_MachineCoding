@@ -10,7 +10,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-public class UserExpense extends BaseModel{
+public class ExpenseUser extends BaseModel{
     @ManyToOne
     private User user;
     private Long amount;
