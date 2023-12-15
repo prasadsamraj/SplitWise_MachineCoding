@@ -30,7 +30,7 @@ public class UserController {
             return registerUserResponseDto;
         }
         registerUserResponseDto.setUserId(user.getId());
-        registerUserResponseDto.setMessage("User registered successfully");
+        registerUserResponseDto.setMessage("User registered successfully with Id: "+user.getId());
         registerUserResponseDto.setResponseStatus(ResponseStatus.SUCCESS);
         return registerUserResponseDto;
     }

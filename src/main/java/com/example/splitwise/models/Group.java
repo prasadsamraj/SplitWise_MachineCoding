@@ -1,9 +1,6 @@
 package com.example.splitwise.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,7 +12,7 @@ public class Group extends BaseModel{
     private String name;
     @ManyToOne
     private User admin;
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<User> users;
     @OneToMany
     private List<Expense> expenses;

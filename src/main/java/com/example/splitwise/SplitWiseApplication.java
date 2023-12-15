@@ -1,10 +1,7 @@
 package com.example.splitwise;
 import com.example.splitwise.Controller.GroupController;
 import com.example.splitwise.Controller.UserController;
-import com.example.splitwise.commands.AddGroupCommand;
-import com.example.splitwise.commands.CommandExecutor;
-import com.example.splitwise.commands.RegisterCommand;
-import com.example.splitwise.commands.UpdateProfileCommand;
+import com.example.splitwise.commands.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -32,6 +29,8 @@ public class SplitWiseApplication implements CommandLineRunner {
         commandExecutor.addCommand(new RegisterCommand(userController));
         commandExecutor.addCommand(new UpdateProfileCommand(userController));
         commandExecutor.addCommand(new AddGroupCommand(groupController));
+        commandExecutor.addCommand(new AddMember(groupController));
+        commandExecutor.addCommand(new ListGroups(groupController));
         while(true){
             System.out.println("Please enter the command:");
             String input = scanner.nextLine();
