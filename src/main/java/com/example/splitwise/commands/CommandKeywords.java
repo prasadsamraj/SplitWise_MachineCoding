@@ -6,4 +6,5 @@ public interface CommandKeywords {
     String addgroup = "AddGroup";
     String addMember = "AddMember";
     String listGroups = "Groups";
+    String expense = "Expense";
 }

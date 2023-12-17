@@ -38,7 +38,7 @@ public class GroupService {
         return groupRepository.save(group);
     }
 
-    public void addMember(Long adminId, Long groupId, Long memberId) throws UserIdInvalidException, GroupIdInvalidException, AdminGroupMismatchException, MemberIdInvalidException, MemberAlreadyInGroupException {
+    public void addMember(Long adminId, Long groupId, Long memberId) throws GroupIdInvalidException, AdminGroupMismatchException, MemberIdInvalidException, MemberAlreadyInGroupException {
         Optional<Group> optionalGroup = groupRepository.findById(groupId);
         if(optionalGroup.isEmpty()) throw new GroupIdInvalidException();
         Group group = optionalGroup.get();

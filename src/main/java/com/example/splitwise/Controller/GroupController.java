@@ -34,7 +34,7 @@ public class GroupController {
         AddMemberResponseDto responseDto = new AddMemberResponseDto();
         try{
             groupService.addMember(requestDto.getAdminId(), requestDto.getGroupId(), requestDto.getMemberId());
-        }catch (UserIdInvalidException | MemberAlreadyInGroupException | AdminGroupMismatchException |
+        }catch (MemberAlreadyInGroupException | AdminGroupMismatchException |
                 GroupIdInvalidException | MemberIdInvalidException e) {
             responseDto.setMessage(e.getMessage());
             responseDto.setResponseStatus(ResponseStatus.FAILURE);

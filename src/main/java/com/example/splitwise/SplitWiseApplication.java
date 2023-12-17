@@ -31,6 +31,7 @@ public class SplitWiseApplication implements CommandLineRunner {
         commandExecutor.addCommand(new AddGroupCommand(groupController));
         commandExecutor.addCommand(new AddMember(groupController));
         commandExecutor.addCommand(new ListGroups(groupController));
+        commandExecutor.addCommand(new ExpenseCommand());
         while(true){
             System.out.println("Please enter the command:");
             String input = scanner.nextLine();
