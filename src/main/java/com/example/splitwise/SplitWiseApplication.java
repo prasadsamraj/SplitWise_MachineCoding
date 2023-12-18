@@ -1,4 +1,5 @@
 package com.example.splitwise;
+import com.example.splitwise.Controller.ExpenseController;
 import com.example.splitwise.Controller.GroupController;
 import com.example.splitwise.Controller.UserController;
 import com.example.splitwise.commands.*;
@@ -19,6 +20,8 @@ public class SplitWiseApplication implements CommandLineRunner {
     UserController userController;
     @Autowired
     GroupController groupController;
+    @Autowired
+    ExpenseController expenseController;
     Scanner scanner = new Scanner(System.in);
     public static void main(String[] args) {
         SpringApplication.run(SplitWiseApplication.class, args);
@@ -29,9 +32,9 @@ public class SplitWiseApplication implements CommandLineRunner {
         commandExecutor.addCommand(new RegisterCommand(userController));
         commandExecutor.addCommand(new UpdateProfileCommand(userController));
         commandExecutor.addCommand(new AddGroupCommand(groupController));
-        commandExecutor.addCommand(new AddMember(groupController));
+        commandExecutor.addCommand(new AddMemberCommand(groupController));
         commandExecutor.addCommand(new ListGroups(groupController));
-        commandExecutor.addCommand(new ExpenseCommand());
+        commandExecutor.addCommand(new ExpenseCommand(expenseController));
         while(true){
             System.out.println("Please enter the command:");
             String input = scanner.nextLine();

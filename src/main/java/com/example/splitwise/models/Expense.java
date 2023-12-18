@@ -17,4 +17,15 @@ public class Expense extends BaseModel{
     private Long amount;
     @Enumerated(EnumType.ORDINAL)
     private ExpenseType expenseType;
+
+    public Expense(User createdBy, Long amount, ExpenseType expenseType, String description) {
+        this.description = description;
+        this.createdBy = createdBy;
+        this.amount = amount;
+        this.expenseType = expenseType;
+    }
+
+    public Expense() {
+
+    }
 }

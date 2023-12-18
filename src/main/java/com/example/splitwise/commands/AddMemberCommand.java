@@ -7,10 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class AddMember implements Command {
+public class AddMemberCommand implements Command {
     GroupController groupController;
     @Autowired
-    public AddMember(GroupController groupController) {
+    public AddMemberCommand(GroupController groupController) {
         this.groupController = groupController;
     }
 

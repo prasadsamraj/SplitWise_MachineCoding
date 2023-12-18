@@ -12,17 +12,20 @@ public class ExpenseInputToDtoConverter {
         AddExpenseRequestDto addExpenseRequestDto = new AddExpenseRequestDto();
         try {
             String[] splitInput = input.split(" ");
+            if(splitInput[0].charAt(0)!='u') throw new ExpenseInvalidFormatException();
             addExpenseRequestDto.setCreatedByUserId(Long.parseLong(splitInput[0].substring(1)));
             List<Long> userIds = new ArrayList<>();
-            userIds.add(addExpenseRequestDto.getCreatedByUserId());
             int index = 2;
             if(splitInput[index].charAt(0)=='g') {
                 addExpenseRequestDto.setGroupId(Long.parseLong(splitInput[index].substring(1)));
                 index++;
             }
-            else while(splitInput[index].charAt(0)=='u'){
-                userIds.add(Long.parseLong(splitInput[index].substring(1)));
-                index++;
+            else {
+                userIds.add(addExpenseRequestDto.getCreatedByUserId());
+                while (splitInput[index].charAt(0) == 'u') {
+                    userIds.add(Long.parseLong(splitInput[index].substring(1)));
+                    index++;
+                }
             }
             addExpenseRequestDto.setUserIds(userIds);
             addExpenseRequestDto.setPayType(PayType.valueOf(splitInput[index]));
@@ -51,6 +54,13 @@ public class ExpenseInputToDtoConverter {
                     splitAmounts.add(Long.parseLong(splitInput[index]));
                     index++;
                 }
+            }
+            if(addExpenseRequestDto.getSplitType().equals(SplitType.Percent)){
+                if(splitAmounts.stream().reduce(Long::sum).get()!=100)
+                    throw new ExpenseInvalidFormatException();
+            }else if(addExpenseRequestDto.getSplitType().equals(SplitType.Exact)){
+                if(!splitAmounts.stream().reduce(Long::sum).get().equals(addExpenseRequestDto.getTotalAmount()))
+                    throw new ExpenseInvalidFormatException();
             }
             addExpenseRequestDto.setSplitAmounts(splitAmounts);
             if(!splitInput[index].equals("Desc")) throw new ExpenseInvalidFormatException();
