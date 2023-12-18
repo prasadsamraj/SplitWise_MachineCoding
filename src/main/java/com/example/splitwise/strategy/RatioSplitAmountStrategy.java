@@ -12,6 +12,8 @@ public class RatioSplitAmountStrategy implements SplitAmountStrategy{
         for (Long split : splits) {
             splitAmounts.add((amount * split) / totalRatio);
         }
+        Long checkSplitSum = splitAmounts.stream().reduce(Long::sum).get();
+        if(!checkSplitSum.equals(amount)) splitAmounts.set(0, splitAmounts.get(0)+(amount-checkSplitSum));
         return splitAmounts;
     }
 }

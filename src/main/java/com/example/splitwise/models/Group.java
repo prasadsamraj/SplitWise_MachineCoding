@@ -14,6 +14,6 @@ public class Group extends BaseModel{
     private User admin;
     @ManyToMany(fetch = FetchType.EAGER)
     private List<User> users;
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     private List<Expense> expenses;
 }

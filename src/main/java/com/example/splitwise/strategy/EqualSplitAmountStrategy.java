@@ -10,6 +10,8 @@ public class EqualSplitAmountStrategy implements SplitAmountStrategy{
         for(int i=0; i<countOfUsers; i++){
             splitAmounts.add(amount/countOfUsers);
         }
+        Long checkSplitSum = splitAmounts.stream().reduce(Long::sum).get();
+        if(!checkSplitSum.equals(amount)) splitAmounts.set(0, splitAmounts.get(0)+(amount-checkSplitSum));
         return splitAmounts;
     }
 }

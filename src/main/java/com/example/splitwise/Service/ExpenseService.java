@@ -7,6 +7,7 @@ import com.example.splitwise.Repository.UserRepository;
 import com.example.splitwise.commands.PayType;
 import com.example.splitwise.commands.SplitType;
 import com.example.splitwise.exceptions.GroupIdInvalidException;
+import com.example.splitwise.exceptions.MemberIdInvalidException;
 import com.example.splitwise.exceptions.UserIdInvalidException;
 import com.example.splitwise.models.*;
 import com.example.splitwise.strategy.SplitAmountStrategyFactory;
@@ -51,14 +52,24 @@ public class ExpenseService {
             expenseUserRepository.save(new ExpenseUser(paidUsers.get(i), splitAmounts.get(i), expense, UserExpenseType.HASTOPAY));
         }
     }
-    public void addExpenseGroup(Long createdByUserId, Long groupId, Long totalAmount, String desc, PayType payType, List<Long> paidAmounts, SplitType splitType, List<Long> splitAmounts) throws UserIdInvalidException, GroupIdInvalidException {
+    public void addExpenseGroup(Long createdByUserId, Long groupId, Long totalAmount, String desc, PayType payType, List<Long> paidAmounts, SplitType splitType, List<Long> splitAmounts) throws UserIdInvalidException, GroupIdInvalidException, MemberIdInvalidException {
         User createdUser = fetchUserById(createdByUserId);
         Optional<Group> optionalGroup = groupRepository.findById(groupId);
         if(optionalGroup.isEmpty()) throw new GroupIdInvalidException();
         Group group = optionalGroup.get();
         List<User> hasToPayUsers = group.getUsers();
+        boolean flag = false;
+        for(User user:hasToPayUsers){
+            if(user.getId().equals(createdByUserId)){
+                flag = true;
+                break;
+            }
+        }
+        if(!flag) throw new MemberIdInvalidException();
         Expense expense = new Expense(createdUser, totalAmount, ExpenseType.REAL, desc);
         expenseRepository.save(expense);
+        group.getExpenses().add(expense);
+        groupRepository.save(group);
         expenseUserRepository.save(new ExpenseUser(createdUser, totalAmount, expense, UserExpenseType.PAID));
         splitAmounts = SplitAmountStrategyFactory.getSplitAmountStrategyFactory(splitType).splitAmount(hasToPayUsers.size(), splitAmounts, totalAmount);
         for(int i=0; i<hasToPayUsers.size(); i++){

@@ -4,6 +4,9 @@ import com.example.splitwise.Dtos.AddExpenseRequestDto;
 import com.example.splitwise.Dtos.AddExpenseResponseDto;
 import com.example.splitwise.Dtos.ResponseStatus;
 import com.example.splitwise.Service.ExpenseService;
+import com.example.splitwise.exceptions.GroupIdInvalidException;
+import com.example.splitwise.exceptions.MemberIdInvalidException;
+import com.example.splitwise.exceptions.UserIdInvalidException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -18,7 +21,7 @@ public class ExpenseController {
     public AddExpenseResponseDto addExpense(AddExpenseRequestDto requestDto){
         AddExpenseResponseDto addExpenseResponseDto = new AddExpenseResponseDto();
         try {
-            if(requestDto.getGroupId()==null) {
+            if (requestDto.getGroupId() == null) {
                 expenseService.addExpenseUsers(requestDto.getCreatedByUserId(),
                         requestDto.getUserIds(),
                         requestDto.getTotalAmount(),
@@ -27,7 +30,7 @@ public class ExpenseController {
                         requestDto.getPaidAmounts(),
                         requestDto.getSplitType(),
                         requestDto.getSplitAmounts());
-            }else{
+            } else {
                 expenseService.addExpenseGroup(requestDto.getCreatedByUserId(),
                         requestDto.getGroupId(),
                         requestDto.getTotalAmount(),
@@ -37,7 +40,7 @@ public class ExpenseController {
                         requestDto.getSplitType(),
                         requestDto.getSplitAmounts());
             }
-        }catch (Exception e){
+        } catch (UserIdInvalidException | GroupIdInvalidException | MemberIdInvalidException e) {
             addExpenseResponseDto.setMessage(e.getMessage());
             addExpenseResponseDto.setResponseStatus(ResponseStatus.FAILURE);
             return addExpenseResponseDto;
