@@ -81,4 +81,16 @@ public class ExpenseService {
         if(optionalUser.isEmpty()) throw new UserIdInvalidException();
         return optionalUser.get();
     }
+    public Long myTotal(Long userId) throws UserIdInvalidException {
+        User user = fetchUserById(userId);
+        List<ExpenseUser> expenseUsers = expenseUserRepository.findAllByUser(user);
+        Long myTotal = 0L;
+        for(ExpenseUser expenseUser:expenseUsers){
+            if(expenseUser.getUserExpenseType().equals(UserExpenseType.PAID))
+                myTotal+=expenseUser.getAmount();
+            else
+                myTotal-=expenseUser.getAmount();
+        }
+        return myTotal;
+    }
 }

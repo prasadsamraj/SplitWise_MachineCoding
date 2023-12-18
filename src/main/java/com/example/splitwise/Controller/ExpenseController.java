@@ -1,8 +1,6 @@
 package com.example.splitwise.Controller;
 
-import com.example.splitwise.Dtos.AddExpenseRequestDto;
-import com.example.splitwise.Dtos.AddExpenseResponseDto;
-import com.example.splitwise.Dtos.ResponseStatus;
+import com.example.splitwise.Dtos.*;
 import com.example.splitwise.Service.ExpenseService;
 import com.example.splitwise.exceptions.GroupIdInvalidException;
 import com.example.splitwise.exceptions.MemberIdInvalidException;
@@ -48,5 +46,20 @@ public class ExpenseController {
         addExpenseResponseDto.setMessage("Expense Successfully Added");
         addExpenseResponseDto.setResponseStatus(ResponseStatus.SUCCESS);
         return addExpenseResponseDto;
+    }
+    public MyTotalResponseDto myTotal(MyTotalRequestDto requestDto){
+        MyTotalResponseDto myTotalResponseDto = new MyTotalResponseDto();
+        Long myTotal;
+        try{
+            myTotal = expenseService.myTotal(requestDto.getUserId());
+        }catch (UserIdInvalidException e){
+            myTotalResponseDto.setMessage(e.getMessage());
+            myTotalResponseDto.setResponseStatus(ResponseStatus.FAILURE);
+            return myTotalResponseDto;
+        }
+        myTotalResponseDto.setMessage("Your current total is: "+ myTotal);
+        myTotalResponseDto.setMyTotal(myTotal);
+        myTotalResponseDto.setResponseStatus(ResponseStatus.SUCCESS);
+        return myTotalResponseDto;
     }
 }
