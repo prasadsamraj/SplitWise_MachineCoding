@@ -8,5 +8,5 @@ public interface CommandKeywords {
     String listGroups = "Groups";
     String expense = "Expense";
     String myTotal = "MyTotal";
-
+    String settleUp = "SettleUp";
 }

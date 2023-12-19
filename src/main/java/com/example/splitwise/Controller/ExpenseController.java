@@ -16,6 +16,7 @@ public class ExpenseController {
     public ExpenseController(ExpenseService expenseService) {
         this.expenseService = expenseService;
     }
+
     public AddExpenseResponseDto addExpense(AddExpenseRequestDto requestDto){
         AddExpenseResponseDto addExpenseResponseDto = new AddExpenseResponseDto();
         try {
@@ -57,7 +58,12 @@ public class ExpenseController {
             myTotalResponseDto.setResponseStatus(ResponseStatus.FAILURE);
             return myTotalResponseDto;
         }
-        myTotalResponseDto.setMessage("Your current total is: "+ myTotal);
+        if(myTotal>0)
+            myTotalResponseDto.setMessage("Your total amount yet to receive: "+ myTotal);
+        else if(myTotal<0)
+            myTotalResponseDto.setMessage("Your total amount to pay: "+ (myTotal*-1));
+        else
+            myTotalResponseDto.setMessage("All transactions are settled");
         myTotalResponseDto.setMyTotal(myTotal);
         myTotalResponseDto.setResponseStatus(ResponseStatus.SUCCESS);
         return myTotalResponseDto;
